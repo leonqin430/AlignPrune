@@ -63,17 +63,22 @@ data/
 mkdir -p data
 wget -P data https://raw.githubusercontent.com/UCSC-REAL/cifar-10-100n/main/data/CIFAR-10_human.pt
 wget -P data https://raw.githubusercontent.com/UCSC-REAL/cifar-10-100n/main/data/CIFAR-100_human.pt
-python -c "from torchvision.datasets import CIFAR10, CIFAR100; CIFAR10('data', download=True); CIFAR100('data', download=True)"
+python -c "from torchvision.datasets import CIFAR10; CIFAR10('data', download=True)"
+python -c "from torchvision.datasets import CIFAR100; CIFAR100('data', download=True)"
 ```
 
-| `--noise_type` | `--dataset` | label noise |
+| `--noise_type` | dataset | label noise |
 |---|---|---|
 | `clean` | both | none |
-| `real` | `cifar100` | CIFAR-100N human annotations (40.2% noise) |
-| `aggre`, `worst` | `cifar10` | CIFAR-10N human annotations, aggregate (9.0%) and worst (40.2%) labels |
-| `rand1`, `rand2`, `rand3` | `cifar10` | CIFAR-10N human annotations of a single annotator (17-18%) |
-| `sym` | both | symmetric: a fraction `--noise_rate` of the labels is changed to one of the other classes, uniformly |
-| `asym` | both | asymmetric: a fraction `--noise_rate` of the labels is changed to a similar class (CIFAR-10: airplane-bird, automobile-truck, cat-dog, deer-horse, frog-ship; CIFAR-100: a class of the same superclass) |
+| `real` | CIFAR-100N | human annotations, 40.2% noise |
+| `aggre`, `worst` | CIFAR-10N | human annotations, 9.0% / 40.2% noise |
+| `rand1`, `rand2`, `rand3` | CIFAR-10N | human annotations, 17-18% noise |
+| `sym` | both | synthetic, symmetric |
+| `asym` | both | synthetic, asymmetric |
+
+The synthetic noise changes a fraction `--noise_rate` of the labels, to one of the other classes uniformly
+(`sym`) or to a similar class (`asym`): airplane ↔ bird, automobile ↔ truck, cat ↔ dog, deer ↔ horse and
+frog ↔ ship on CIFAR-10, and another class of the same superclass on CIFAR-100.
 
 AlignPrune needs a small clean reference set. `main_cifar.py` holds out `--ref_size` (default 1,000) random
 training images with their clean labels as the reference set. They are removed from the training set of every
@@ -159,12 +164,13 @@ Static (`--prune_type static`) and dynamic (`--prune_type random`) random prunin
 
 | | argument | default |
 |---|---|---|
-| pruning probability r | `--prune_ratio` | 0.5 with InfoBatch, 0.1 with SeTa |
+| pruning probability r | `--prune_ratio` | 0.5 (InfoBatch), 0.1 (SeTa) |
 | annealing ratio δ | `--delta` | 0.875 |
 | trajectory window size N | `--window_size` | 25 |
-| correlation function ρ | `--score` | `pearson` (also `cosine`, `dtw`) |
-| SeTa: number of groups k, window scale α | `--num_group`, `--window_scale` | 5, 0.9 |
-| size of the reference set | `--ref_size` | 1000 |
+| correlation function ρ | `--score` | `pearson` (or `cosine`, `dtw`) |
+| SeTa: number of groups k | `--num_group` | 5 |
+| SeTa: window scale α | `--window_scale` | 0.9 |
+| reference set size | `--ref_size` | 1000 |
 
 ## Citation
 
