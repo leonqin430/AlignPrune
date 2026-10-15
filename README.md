@@ -172,8 +172,10 @@ Static (`--prune_type static`) and dynamic (`--prune_type random`) random prunin
 @inproceedings{qin2026beyond,
   title     = {Beyond Loss Values: Robust Dynamic Pruning via Loss Trajectory Alignment},
   author    = {Qin, Huaiyuan and Yang, Muli and Goenawan, Gabriel James and Wang, Kai and Wang, Zheng and Hu, Peng and Peng, Xi and Zhu, Hongyuan},
-  booktitle = {Findings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
-  year      = {2026}
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Findings},
+  month     = {June},
+  year      = {2026},
+  pages     = {3029-3039}
 }
 
 @inproceedings{qin2024infobatch,
